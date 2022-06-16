@@ -7,9 +7,9 @@ export const setPosts = (posts) => {
     }
 }
 
-export const selectedPagePosts = (pagePosts) => {
+export const setPageCount = (pageCount) => {
     return {
-        type: ActionTypes.SELECTED_PAGE_POSTS,
-        payload: pagePosts,
+        type: ActionTypes.PAGE_COUNT,
+        payload: pageCount,
     }
 }

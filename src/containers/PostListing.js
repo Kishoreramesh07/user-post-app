@@ -1,17 +1,20 @@
 import React, { useEffect } from 'react';
 import { config } from '../ApiURL';
 import axios from 'axios';
-import { setPosts } from "../redux/actions/postActions"
+import { setPosts, setPageCount } from "../redux/actions/postActions"
 import { useDispatch, useSelector } from 'react-redux';
-import { Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Stack, Pagination } from '@mui/material';
 
 export default function PostListing() {
     const posts = useSelector((state) => state.allPosts.posts);
+    const pageCount = useSelector((state) => state.pageCounts.pageCount);
     const dispatch = useDispatch();
 
-    const fetchPosts = async () => {
+    const fetchPosts = async (number) => {
         try {
-            const response = await axios.get(`${config.endpoint}/posts?_page=1`);
+            const response = await axios.get(`${config.endpoint}/posts?_page=${number}`);
+            const total = response.headers['x-total-count'];
+            dispatch(setPageCount(total/10));
             dispatch(setPosts(response.data));
         } catch (err) {
             console.log(err);
@@ -19,11 +22,13 @@ export default function PostListing() {
     }
 
     useEffect(() => {
-        fetchPosts();
+        fetchPosts(1);
     }, [])
 
-    console.log(posts)
-
+    const handlePageChange = (event, value) =>{
+        fetchPosts(value);
+    }
+    
     return (
         <Container maxWidth="xl" sx={{pt: '3rem'}}>
             <TableContainer component={Paper}>
@@ -46,6 +51,9 @@ export default function PostListing() {
                     </TableBody>
                 </Table>
             </TableContainer>
+            <Stack spacing={2} sx={{pt: '2rem'}} direction="row" justifyContent="center" alignItems="center">
+                <Pagination count={pageCount} onChange={handlePageChange} size="large" showFirstButton showLastButton />
+            </Stack>
         </Container>
     )
 }
