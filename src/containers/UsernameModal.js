@@ -1,22 +1,28 @@
 import {React, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
-import {Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle} from '@mui/material';
+import {Box, Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Snackbar} from '@mui/material';
 
 export default function UsernameModal() {
-    const [username, setUsername] = useState("")
-    const [open, setOpen] = useState(true);
+    const [username, setUsername] = useState("");
+    const [openSnackBar, setOpenSnackBar] = useState(false);
+    const [validationError, setValidationError] = useState(null);
 
     const navigate = useNavigate();
 
     const updateUsername = () => {
-        sessionStorage.setItem("username", username);
-        setOpen(false);
-        navigate('/posts')
+        if(!validationError){
+            setOpenSnackBar(true);
+            setValidationError('Username is a required field');
+        } else {
+            setOpenSnackBar(false);
+            sessionStorage.setItem("username", username);
+            navigate('/posts');
+        }
     };
 
     return (
-        <div>
-            <Dialog open={open} fullWidth maxWidth="xs">
+        <Box>
+            <Dialog open={true} fullWidth maxWidth="xs">
                 <DialogTitle>Update Username</DialogTitle>
                 <DialogContent>
                     <TextField autoFocus margin="dense" id="name" label="Username" type="text" fullWidth variant="outlined" value={username} onChange={(e) => setUsername(e.target.value)}/>
@@ -25,6 +31,7 @@ export default function UsernameModal() {
                     <Button onClick={updateUsername} variant="contained">Update</Button>
                 </DialogActions>
             </Dialog>
-        </div>
+            {validationError && <Snackbar autoHideDuration={3000} open={openSnackBar} message={validationError} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} onClose={() => setOpenSnackBar(false)} />}
+        </Box>
     );
 }

@@ -8,7 +8,7 @@ export default function Header() {
                 <Container maxWidth="xl">
                     <Toolbar>
                         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                            News
+                            {sessionStorage.username}
                         </Typography>
                     </Toolbar>
                 </Container>

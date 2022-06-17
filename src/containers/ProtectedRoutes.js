@@ -3,11 +3,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 
 const useAuth = () => {
     const username = sessionStorage.username;
-    if(username){
-        return true
-    } else {
-        return false
-    }
+    return username ? true : false;
 }
 
 export default function ProtectedRoutes() {
