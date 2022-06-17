@@ -7,9 +7,7 @@ export default function Header() {
             <AppBar position="static">
                 <Container maxWidth="xl">
                     <Toolbar>
-                        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                            {sessionStorage.username}
-                        </Typography>
+                        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>Hello {sessionStorage.username}</Typography>
                     </Toolbar>
                 </Container>
             </AppBar>

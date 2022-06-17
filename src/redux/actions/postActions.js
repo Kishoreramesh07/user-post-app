@@ -7,9 +7,23 @@ export const setPosts = (posts) => {
     }
 }
 
-export const setPageCount = (pageCount) => {
+export const setPostPageCount = (postPageCount) => {
     return {
-        type: ActionTypes.PAGE_COUNT,
-        payload: pageCount,
+        type: ActionTypes.POST_PAGE_COUNT,
+        payload: postPageCount,
+    }
+}
+
+export const setComments = (comments) => {
+    return {
+        type: ActionTypes.SET_COMMENTS,
+        payload: comments,
+    }
+}
+
+export const setCommentPageCount = (commentPageCount) => {
+    return {
+        type: ActionTypes.COMMENT_PAGE_COUNT,
+        payload: commentPageCount,
     }
 }

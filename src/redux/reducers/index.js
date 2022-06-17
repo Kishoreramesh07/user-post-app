@@ -1,9 +1,11 @@
 import { combineReducers } from "redux";
-import { postReducer, pageCountReducer } from "./postReducer";
+import { postReducer, postPageCountReducer, commentReducer, commentPageCountReducer } from "./postReducer";
 
 const reducers = combineReducers({
     allPosts: postReducer,
-    pageCounts: pageCountReducer,
+    postPageCounts: postPageCountReducer,
+    allComments: commentReducer,
+    commentPageCounts: commentPageCountReducer,
 })
 
 export default reducers;
