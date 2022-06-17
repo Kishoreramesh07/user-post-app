@@ -3,6 +3,7 @@ import { config } from '../ApiURL';
 import axios from 'axios';
 import { setPosts, setPageCount } from "../redux/actions/postActions"
 import { useDispatch, useSelector } from 'react-redux';
+import Header from './Header';
 import { Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Stack, Pagination } from '@mui/material';
 
 export default function PostListing() {
@@ -14,7 +15,7 @@ export default function PostListing() {
         try {
             const response = await axios.get(`${config.endpoint}/posts?_page=${number}`);
             const total = response.headers['x-total-count'];
-            dispatch(setPageCount(total/10));
+            dispatch(setPageCount(total / 10));
             dispatch(setPosts(response.data));
         } catch (err) {
             console.log(err);
@@ -25,36 +26,39 @@ export default function PostListing() {
         fetchPosts(1);
     }, [])
 
-    const handlePageChange = (event, value) =>{
+    const handlePageChange = (event, value) => {
         fetchPosts(value);
     }
-    
+
     return (
-        <Container maxWidth="xl" sx={{pt: '3rem'}}>
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }}>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Id</TableCell>
-                            <TableCell>Title</TableCell>
-                            <TableCell>Post</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {posts.map((post) => (
-                            <TableRow key={post.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                <TableCell>{post.id}</TableCell>
-                                <TableCell>{post.title}</TableCell>
-                                <TableCell>{post.body}</TableCell>
+        <>
+            <Header />
+            <Container maxWidth="xl" sx={{ pt: '3rem' }}>
+                <TableContainer component={Paper}>
+                    <Table sx={{ minWidth: 650 }}>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Id</TableCell>
+                                <TableCell>Title</TableCell>
+                                <TableCell>Post</TableCell>
                             </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-            <Stack spacing={2} sx={{pt: '2rem'}} direction="row" justifyContent="center" alignItems="center">
-                <Pagination count={pageCount} onChange={handlePageChange} size="large" showFirstButton showLastButton />
-            </Stack>
-        </Container>
+                        </TableHead>
+                        <TableBody>
+                            {posts.map((post) => (
+                                <TableRow key={post.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                    <TableCell>{post.id}</TableCell>
+                                    <TableCell>{post.title}</TableCell>
+                                    <TableCell>{post.body}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                <Stack spacing={2} sx={{ pt: '2rem' }} direction="row" justifyContent="center" alignItems="center">
+                    <Pagination count={pageCount} onChange={handlePageChange} size="large" showFirstButton showLastButton />
+                </Stack>
+            </Container>
+        </>
     )
 }
 
